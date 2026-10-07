@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mon projet CELIA</title>
+<meta name="theme-color" content="#F5F1E9">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F5F1E9; --surface:#FFFDF8; --surface-2:#ECE6DA; --ink:#22261F; --ink-2:#5B5F55;
+  --line:#DDD5C6; --accent:#3F4A35; --accent-ink:#F5F1E9; --clay:#B86B45; --clay-soft:#F1DED2;
+  --ok:#4E7A4F; --shadow:0 10px 30px rgba(34,38,31,.08);
+  --r:18px; --serif:'Fraunces',Georgia,serif; --sans:'Manrope',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:#D9D2C4;font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased;display:flex;justify-content:center;align-items:center}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input,select{font:inherit;color:inherit}
+.app{position:relative;width:100%;max-width:420px;height:100dvh;background:var(--bg);overflow:hidden;display:flex;flex-direction:column}
+@media(min-width:520px){.app{height:min(880px,96dvh);border-radius:38px;box-shadow:0 30px 80px rgba(34,38,31,.25);border:10px solid #1B1E19}}
+.screen{flex:1;overflow-y:auto;padding:18px 18px 110px;scroll-behavior:smooth}
+.screen::-webkit-scrollbar{display:none}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 6px}
+.logo{font-family:var(--serif);font-size:22px;letter-spacing:.14em;font-weight:500}
+.logo small{display:block;font-family:var(--sans);font-size:9px;letter-spacing:.22em;color:var(--ink-2);text-transform:uppercase;font-weight:600}
+.icon-btn{width:40px;height:40px;border-radius:50%;background:var(--surface);display:grid;place-items:center;border:1px solid var(--line)}
+h1{font-family:var(--serif);font-weight:400;font-size:30px;line-height:1.12;letter-spacing:-.01em}
+h1 em,h2 em{font-style:italic;color:var(--clay)}
+h2{font-family:var(--serif);font-weight:400;font-size:22px;line-height:1.2}
+h3{font-size:15px;font-weight:700}
+.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2);font-weight:700;margin-bottom:8px}
+p.lead{color:var(--ink-2);font-size:15px;line-height:1.55;margin-top:10px}
+.muted{color:var(--ink-2);font-size:13px;line-height:1.5}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--shadow)}
+.stack>*+*{margin-top:14px}
+.section{margin-top:26px}
+.hero{position:relative;border-radius:24px;overflow:hidden;height:220px;background:linear-gradient(135deg,#C9BBA2,#8C9A7C)}
+.hero img{width:100%;height:100%;object-fit:cover;display:block}
+.hero .cap{position:absolute;inset:auto 0 0 0;padding:16px;background:linear-gradient(transparent,rgba(20,22,18,.7));color:#fff;font-family:var(--serif);font-style:italic;font-size:17px}
+.choice{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:16px;transition:.2s}
+.choice:hover{border-color:var(--accent)}
+.choice.on{border-color:var(--accent);background:#EEF0E8;box-shadow:inset 0 0 0 1px var(--accent)}
+.choice .num{font-family:var(--serif);font-size:20px;color:var(--clay);min-width:26px}
+.choice b{display:block;font-size:15px}
+.choice span{font-size:13px;color:var(--ink-2)}
+.choice .arr{margin-left:auto;font-size:18px;color:var(--ink-2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 20px;border-radius:999px;font-weight:700;font-size:15px;transition:.2s}
+.btn-primary{background:var(--accent);color:var(--accent-ink)}
+.btn-primary:hover{filter:brightness(1.1)}
+.btn-ghost{border:1px solid var(--ink);}
+.btn-block{width:100%}
+.btn[disabled]{opacity:.4;pointer-events:none}
+.progress-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.progress-row:first-of-type{border-top:0}
+.ring{--p:0;width:44px;height:44px;border-radius:50%;background:conic-gradient(var(--accent) calc(var(--p)*1%),var(--surface-2) 0);display:grid;place-items:center;flex:none}
+.ring::after{content:attr(data-v);width:34px;height:34px;border-radius:50%;background:var(--surface);display:grid;place-items:center;font-size:11px;font-weight:700}
+.progress-row .go{margin-left:auto;font-size:13px;font-weight:700;color:var(--clay)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:14px;font-weight:500;transition:.15s}
+.chip.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.field{display:block}
+.field label{display:block;font-size:13px;font-weight:700;margin-bottom:8px}
+.field input[type=text],.field input[type=number],.field select{width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font-size:15px}
+.seg{display:flex;background:var(--surface-2);border-radius:12px;padding:4px}
+.seg button{flex:1;padding:10px;border-radius:9px;font-size:14px;font-weight:600;color:var(--ink-2)}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:0 2px 6px rgba(0,0,0,.08)}
+input[type=range]{width:100%;accent-color:var(--accent);margin-top:6px}
+.range-head{display:flex;justify-content:space-between;align-items:baseline}
+.range-head b{font-family:var(--serif);font-size:20px;font-weight:500}
+.stepper{display:flex;align-items:center;gap:14px}
+.stepper button{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--surface);font-size:20px}
+.stepper b{font-family:var(--serif);font-size:24px;min-width:22px;text-align:center}
+.result{background:var(--accent);color:var(--accent-ink);border-radius:22px;padding:20px}
+.result .big{font-family:var(--serif);font-size:40px;line-height:1}
+.result .big small{font-size:18px}
+.bar{display:flex;height:12px;border-radius:99px;overflow:hidden;margin:16px 0 10px;background:rgba(255,255,255,.15)}
+.bar i{display:block;height:100%}
+.legend{display:grid;grid-template-columns:1fr auto;gap:6px 10px;font-size:13px}
+.legend span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:8px;background:var(--c)}
+.note{font-size:12px;line-height:1.5;color:var(--ink-2);padding:12px 14px;border-radius:12px;background:var(--surface-2)}
+.check-list li{list-style:none;display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--line);font-size:14px;line-height:1.45}
+.check-list li:first-child{border-top:0}
+.check-list .dot{flex:none;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:12px}
+.check-list .dot.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.check-list .dot.warn{background:var(--clay-soft);border-color:var(--clay);color:var(--clay)}
+.insp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.insp{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:3/4;background:linear-gradient(160deg,#CFC3AE,#9AA58A);text-align:left}
+.insp:nth-child(3n+1){grid-column:span 2;aspect-ratio:16/10}
+.insp img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.insp:hover img{transform:scale(1.04)}
+.insp .t{position:absolute;inset:auto 0 0 0;padding:12px;color:#fff;font-size:13px;font-weight:600;background:linear-gradient(transparent,rgba(20,22,18,.75))}
+.insp .t i{display:block;font-family:var(--serif);font-weight:400;font-size:12px;opacity:.85}
+.heart{position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;background:rgba(255,253,248,.9);display:grid;place-items:center;font-size:17px;transition:.2s}
+.heart.on{background:var(--clay);color:#fff;transform:scale(1.08)}
+.tabbar{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-around;padding:10px 8px calc(14px + env(safe-area-inset-bottom));background:rgba(255,253,248,.94);backdrop-filter:blur(12px);border-top:1px solid var(--line);z-index:5}
+.tab{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--ink-2);padding:4px 8px;min-width:58px}
+.tab svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.6}
+.tab.on{color:var(--accent)}
+.tab.cta{color:var(--accent-ink)}
+.tab.cta .pill{background:var(--clay);border-radius:14px;padding:6px 12px;display:grid;place-items:center}
+.tab.cta svg{stroke:#fff}
+.tab.cta{color:var(--clay)}
+.back{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--ink-2);margin-bottom:14px}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.days{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.days::-webkit-scrollbar{display:none}
+.day{flex:none;width:62px;padding:10px 0;border-radius:14px;border:1px solid var(--line);background:var(--surface);text-align:center}
+.day small{display:block;font-size:11px;color:var(--ink-2);text-transform:uppercase;font-weight:700}
+.day b{font-family:var(--serif);font-size:22px;font-weight:500}
+.day.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.day.on small{color:var(--accent-ink);opacity:.8}
+.carnet dt{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);font-weight:700;margin-top:12px}
+.carnet dd{font-size:14px;margin-top:3px;line-height:1.45}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 9px;border-radius:99px;background:var(--clay-soft);color:var(--clay)}
+.toast{position:absolute;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:99px;font-size:13px;font-weight:600;opacity:0;transition:.3s;pointer-events:none;z-index:9;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.fade{animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.success{text-align:center;padding-top:40px}
+.success .mark{width:76px;height:76px;margin:0 auto 20px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-size:34px}
+.atelier-cta{display:flex;gap:14px;align-items:center;width:100%;text-align:left;padding:16px;border-radius:20px;background:var(--accent);color:var(--accent-ink)}
+.atelier-cta .ic{width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.14);display:grid;place-items:center;flex:none}
+.atelier-cta svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.6}
+.atelier-cta b{display:block;font-size:15px}.atelier-cta span{font-size:13px;opacity:.8}
+.ai-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:99px;background:var(--clay-soft);color:var(--clay)}
+.photo-drop{border:1.5px dashed var(--line);border-radius:22px;padding:30px 18px;text-align:center;background:var(--surface)}
+.photo-drop .big-ic{width:64px;height:64px;margin:0 auto 14px;border-radius:50%;background:var(--surface-2);display:grid;place-items:center}
+.photo-drop svg{width:30px;height:30px;stroke:var(--accent);fill:none;stroke-width:1.5}
+.photo-wrap{position:relative;border-radius:20px;overflow:hidden;background:var(--surface-2)}
+.photo-wrap img{width:100%;height:260px;object-fit:cover;display:block}
+.scan{position:absolute;left:0;right:0;height:70px;background:linear-gradient(transparent,rgba(184,107,69,.5),transparent);animation:scan 1.3s ease-in-out infinite alternate}
+@keyframes scan{from{top:-70px}to{top:100%}}
+.grid-ov{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.18) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.18) 1px,transparent 1px);background-size:32px 32px}
+.scan-label{position:absolute;left:12px;right:12px;bottom:12px;background:rgba(20,22,18,.75);color:#fff;border-radius:12px;padding:10px 12px;font-size:13px;font-weight:600}
+.swatches{display:flex;gap:8px;margin-top:10px}
+.sw{flex:1;height:58px;border-radius:12px;display:flex;align-items:flex-end;padding:6px 7px;font-size:10px;font-weight:700;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
+.plan{display:block;width:100%;height:130px;border-radius:12px;background:var(--surface-2);margin-bottom:12px}
+.keep{font-size:13px;font-weight:700;color:var(--clay);margin-top:10px}
+.keep.on{color:var(--ok)}
+.obs li{list-style:none;display:flex;gap:10px;font-size:14px;line-height:1.45;padding:8px 0}
+.obs li::before{content:"◆";color:var(--clay);font-size:10px;margin-top:5px}
+.proto{position:absolute;top:10px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ink-2);opacity:.6;pointer-events:none}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="topbar">
+    <div class="logo">CELIA<small>Mon projet</small></div>
+    <button class="icon-btn" id="resetBtn" title="Recommencer la démo" aria-label="Recommencer la démo">↺</button>
+  </div>
+  <main class="screen" id="screen"></main>
+  <nav class="tabbar" id="tabbar"></nav>
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+/* ---------- Données ---------- */
+const IMG = p => `https://celia-creation.fr/images/editorial/${p}`;
+const INSPIRATIONS = [
+  {id:'jade', img:IMG('inspiration-jade-1600.webp'), t:'Terrasse prolongée', c:'Plain-pied ouvert sur la piscine', tags:['Plain-pied','Terrasse','Piscine']},
+  {id:'circ', img:IMG('inspiration-circulation-1600.webp'), t:'Jardin à l’ombre', c:'Un coin repos face à la maison', tags:['Jardin','Piscine']},
+  {id:'ouv', img:IMG('inspiration-ouvertures-1600.webp'), t:'Grandes ouvertures', c:'Façade vitrée sous un large débord', tags:['Lumière','Plain-pied','Terrasse']},
+  {id:'prop', img:IMG('inspiration-proportions-1600.webp'), t:'Étage & pergola', c:'Des volumes mis en proportion', tags:['Étage','Terrasse','Jardin']},
+  {id:'terr', img:IMG('realisation-terrasse-1600.webp'), t:'Terrasse bois', c:'Dans le prolongement des pièces de vie', tags:['Bois','Terrasse','Lumière']},
+  {id:'cham', img:IMG('realisation-chambelain-1600.webp'), t:'Volumes composés', c:'Un étage central, deux ailes', tags:['Étage','Jardin']},
+  {id:'mat', img:IMG('matiere-1600.webp'), t:'Matières & seuils', c:'Enduit clair, éclairage, entrée plantée', tags:['Matières','Lumière']},
+];
+const STAGES = [
+  {id:'terrain', t:'J’ai un terrain ou un projet en tête', s:'Poser les premières questions'},
+  {id:'recherche', t:'Je cherche un terrain et une maison', s:'Voir ce qui est possible'},
+  {id:'idees', t:'Je cherche des idées pour ma maison', s:'Photographiez une pièce, recevez des idées'},
+  {id:'reperes', t:'J’ai besoin de repères', s:'Comprendre les étapes'},
+];
+const PRIORITES = ['Lumière','Jardin','Piscine','Bureau','Suite parentale','Garage','Cellier','Grande pièce de vie','Chambres d’amis','Rangements'];
+
+/* ---------- Atelier photo (IA simulée) ---------- */
+const ROOMS = {
+  'Séjour':[
+    {t:'Tout tourné vers le jardin', d:'Canapé face à la baie, dos à la cuisine : la vue devient le point focal et la circulation longe la façade.', plan:[[6,8,70,34,'Baie vitrée'],[16,50,54,22,'Canapé'],[96,10,56,40,'Cuisine'],[92,60,60,32,'Repas']]},
+    {t:'Deux ambiances, une pièce', d:'Un meuble bas sépare le coin salon du coin repas sans couper la lumière. Le tapis délimite chaque zone.', plan:[[6,8,64,84,'Salon'],[74,30,8,40,'Meuble bas'],[88,8,66,84,'Repas']]},
+    {t:'Le coin lecture lumineux', d:'Un fauteuil et une liseuse près de la fenêtre libèrent le centre de la pièce pour circuler.', plan:[[6,8,40,36,'Lecture'],[56,30,70,30,'Canapé'],[56,68,70,24,'Tapis'],[134,8,20,84,'Rangement']]},
+  ],
+  'Cuisine':[
+    {t:'Îlot central convivial', d:'Un îlot avec deux tabourets sert de plan de travail et de coin petit-déjeuner, face au séjour.', plan:[[6,8,148,22,'Plan de travail'],[46,46,68,28,'Îlot'],[6,80,148,12,'Passage']]},
+    {t:'Cuisine en L ouverte', d:'Le L libère un angle pour la table et garde le triangle évier – plaque – frigo compact.', plan:[[6,8,148,22,'Plan + évier'],[6,30,32,62,'Colonnes'],[76,50,70,36,'Table']]},
+    {t:'Cellier attenant', d:'Un cellier derrière la cuisine absorbe électroménager et réserves : la cuisine reste dégagée.', plan:[[6,8,46,84,'Cellier'],[58,8,96,22,'Plan de travail'],[78,50,60,30,'Îlot']]},
+  ],
+  'Chambre':[
+    {t:'Suite parentale', d:'Tête de lit côté mur aveugle, dressing en entrée de chambre qui fait sas avec la salle d’eau.', plan:[[6,8,40,84,'Dressing'],[52,8,50,30,'S. d’eau'],[70,48,60,40,'Lit']]},
+    {t:'Lit face à la fenêtre', d:'Le réveil se fait face à la lumière ; rangements intégrés de part et d’autre de la porte.', plan:[[40,8,80,10,'Fenêtre'],[48,40,64,44,'Lit'],[6,70,28,22,'Rangement'],[126,70,28,22,'Rangement']]},
+    {t:'Coin bureau intégré', d:'Un plan de travail sous la fenêtre transforme la chambre d’amis en bureau au quotidien.', plan:[[6,8,70,18,'Bureau'],[90,40,60,46,'Lit'],[6,60,40,32,'Rangement']]},
+  ],
+  'Extérieur':[
+    {t:'Terrasse dans le prolongement', d:'Même niveau et même teinte de sol que le séjour : dedans et dehors se lisent comme une seule pièce.', plan:[[6,8,148,24,'Séjour'],[6,36,148,30,'Terrasse'],[40,72,80,20,'Jardin']]},
+    {t:'Coin ombre & piscine', d:'Pergola côté ouest pour l’ombre de l’après-midi ; la piscine décalée garde une pelouse pour jouer.', plan:[[6,8,60,40,'Pergola'],[80,14,74,30,'Piscine'],[6,56,148,36,'Pelouse']]},
+    {t:'Jardin en paliers', d:'Des massifs de graminées et un chemin en pas japonais structurent le jardin sans le cloisonner.', plan:[[6,8,148,22,'Terrasse'],[6,36,70,56,'Massifs'],[84,36,70,56,'Pelouse']]},
+  ],
+};
+const STYLES = {
+  'Contemporain':{pal:[['#EDEAE4','Blanc cassé'],['#BFB8AD','Grège'],['#3A3B38','Anthracite'],['#B86B45','Terre cuite']], mat:['Béton ciré','Chêne clair','Métal noir mat','Grands carreaux'], idees:['Menuiseries fines et grands formats pour cadrer le jardin','Éclairage indirect en corniche plutôt que des plafonniers','Une seule teinte forte, sur un mur ou une niche']},
+  'Méditerranéen':{pal:[['#F3EBDD','Chaux'],['#D9B48F','Sable'],['#7E8B6A','Olivier'],['#B5603C','Tomette']], mat:['Enduit à la chaux','Tomettes','Lin','Rotin'], idees:['Ombre portée : stores en toile, pergola, débord de toit','Pièces fraîches : sols minéraux et murs clairs','Végétal à l’intérieur : oliviers en pot, figuiers']},
+  'Bois & nature':{pal:[['#F1ECE2','Lin'],['#C9A27E','Chêne'],['#5E6B4E','Mousse'],['#2F3A2C','Forêt']], mat:['Bardage bois','Parquet massif','Laine','Pierre naturelle'], idees:['Plafond bois pour réchauffer un volume haut','Rangements intégrés en menuiserie sur mesure','Grandes ouvertures pour faire entrer le paysage']},
+  'Minimal':{pal:[['#F7F6F3','Blanc'],['#DAD7D0','Perle'],['#9C978E','Taupe'],['#1F1F1D','Noir']], mat:['Microciment','Laque mate','Verre','Pierre claire'], idees:['Portes toute hauteur pour alléger les volumes','Tout ranger : zéro meuble en applique visible','Un objet signature par pièce, pas plus']},
+};
+let PHOTO=null, PHOTO_INFO=null, ANALYSING=false;
+
+function analysePhoto(dataUrl, cb){
+  const im=new Image(); im.onload=()=>{
+    const c=document.createElement('canvas'), W=48, H=Math.round(48*im.height/im.width)||48; c.width=W; c.height=H;
+    const x=c.getContext('2d'); x.drawImage(im,0,0,W,H); const d=x.getImageData(0,0,W,H).data;
+    let lum=0, buckets={};
+    for(let i=0;i<d.length;i+=4){ const r=d[i],g=d[i+1],b=d[i+2]; lum+=(.2126*r+.7152*g+.0722*b)/255;
+      const key=[r,g,b].map(v=>Math.min(255,Math.round(v/48)*48)).join(','); buckets[key]=(buckets[key]||0)+1; }
+    lum/= (d.length/4);
+    const top=Object.entries(buckets).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k])=>'#'+k.split(',').map(v=>(+v).toString(16).padStart(2,'0')).join(''));
+    cb({lum, top});
+  }; im.src=dataUrl;
+}
+function resizePhoto(file, cb){
+  const r=new FileReader(); r.onload=e=>{ const im=new Image(); im.onload=()=>{
+    const max=900, sc=Math.min(1,max/Math.max(im.width,im.height)); const c=document.createElement('canvas');
+    c.width=Math.round(im.width*sc); c.height=Math.round(im.height*sc); c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+    cb(c.toDataURL('image/jpeg',.82)); }; im.src=e.target.result; }; r.readAsDataURL(file);
+}
+function planSVG(rects){
+  return `<svg class="plan" viewBox="0 0 160 100" role="img" aria-label="Schéma d’agencement"><rect x="2" y="2" width="156" height="96" rx="6" fill="none" stroke="#5B5F55" stroke-width="1.2"/>${rects.map(([x,y,w,h,l],i)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" fill="${['#DCE2D2','#F1DED2','#E7E1D4','#D9D2C4'][i%4]}" stroke="#3F4A35" stroke-width=".6"/><text x="${x+w/2}" y="${y+h/2+3}" text-anchor="middle" font-size="6.5" font-family="Manrope,sans-serif" font-weight="700" fill="#22261F">${l}</text>`).join('')}</svg>`;
+}
+
+/* ---------- État ---------- */
+const DEFAULT = {
+  tab:'home', sub:null, stage:null,
+  terrain:{has:null, commune:'', surface:'', orientation:'', viab:null, plu:null},
+  budget:{total:380000, terrainPrix:110000, annexes:18000, m2:2100},
+  maison:{niveaux:'Plain-pied', chambres:3, priorites:[]},
+  likes:[], atelier:{room:'Séjour', style:'Méditerranéen', step:'start', kept:[]}, ideas:[], rdv:{mode:'Agence', day:null, slot:null, done:false}
+};
+let S;
+function load(){ try{ const raw=localStorage.getItem('celia-proto'); S = raw? Object.assign(structuredClone(DEFAULT), JSON.parse(raw)) : structuredClone(DEFAULT);}catch(e){ S=structuredClone(DEFAULT);} }
+function save(){ try{ localStorage.setItem('celia-proto', JSON.stringify(S)); }catch(e){} }
+load();
+if(S.atelier) S.atelier.step='start';
+
+/* ---------- Utilitaires ---------- */
+const $ = s => document.querySelector(s);
+const eur = n => Math.round(n).toLocaleString('fr-FR')+' €';
+const k = n => Math.round(n/1000).toLocaleString('fr-FR')+' k€';
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),1800); }
+function go(tab, sub=null){ S.tab=tab; S.sub=sub; save(); render(); $('#screen').scrollTop=0; }
+
+function calcBudget(){
+  const b=S.budget, hasT = S.terrain.has===true;
+  const terrain = hasT?0:b.terrainPrix;
+  const frais = hasT?0:b.terrainPrix*0.08;
+  const maison = Math.max(0, b.total - terrain - frais - b.annexes);
+  const surface = maison / b.m2;
+  return {terrain, frais, annexes:b.annexes, maison, surface};
+}
+function progress(){
+  const t=S.terrain; let pt=0;
+  if(t.has!==null) pt+=25; if(t.commune) pt+=25; if(t.surface) pt+=20; if(t.orientation) pt+=15; if(t.viab!==null) pt+=15;
+  const pb = S.budgetTouched?100:0;
+  let pm=0; if(S.maison.niveaux) pm+=30; if(S.maison.chambres) pm+=20; pm+=Math.min(50,S.maison.priorites.length*17);
+  return {terrain:Math.min(100,pt), budget:pb, maison:Math.min(100,pm)};
+}
+function likedTags(){
+  const c={}; S.likes.forEach(id=>{ const i=INSPIRATIONS.find(x=>x.id===id); i&&i.tags.forEach(t=>c[t]=(c[t]||0)+1); });
+  return Object.entries(c).sort((a,b)=>b[1]-a[1]).map(x=>x[0]);
+}
+const img = (src,alt) => `<img src="${src}" alt="${alt}" loading="lazy" onerror="this.remove()">`;
+
+/* ---------- Écrans ---------- */
+function Home(){
+  const p=progress(), avg=Math.round((p.terrain+p.budget+p.maison)/3);
+  if(!S.stage){
+    return `<div class="fade">
+      <div class="hero">${img(IMG('gina-v3-1600.webp'),'Maison contemporaine ouverte sur un jardin')}<div class="cap">Habiter dedans. Profiter du dehors.</div></div>
+      <div class="section"><div class="eyebrow">Bienvenue</div>
+      <h1>Votre projet de maison, <em>préparé à votre rythme.</em></h1>
+      <p class="lead">Terrain, budget, maison : avancez pas à pas, et arrivez à votre premier rendez-vous avec un projet déjà clair.</p></div>
+      <div class="section"><h2>Où en êtes-vous ?</h2><div class="stack" style="margin-top:14px">
+      ${STAGES.map((s,i)=>`<button class="choice" data-stage="${s.id}"><span class="num">0${i+1}</span><div><b>${s.t}</b><span>${s.s}</span></div><span class="arr">→</span></button>`).join('')}
+      </div></div></div>`;
+  }
+  const next = p.terrain<60?['terrain','Parlons de votre terrain','5 questions pour repérer les premières contraintes.']
+            : p.budget<100?['budget','Clarifiez votre enveloppe','Voyez ce qu’elle permet, poste par poste.']
+            : p.maison<70?['maison','Décrivez votre façon de vivre','Niveaux, chambres, priorités.']
+            : S.likes.length<2?['inspi','Trouvez ce qui vous plaît','Aimez quelques images pour affiner vos goûts.']
+            : ['rdv','Votre projet est prêt à être discuté','Réservez un échange avec un conseiller CELIA.'];
+  const stage = STAGES.find(s=>s.id===S.stage);
+  return `<div class="fade">
+    <div class="eyebrow">${stage?stage.t:''}</div>
+    <h1>Votre projet est prêt à <em>${avg}%</em></h1>
+    <p class="lead">Un projet réussi repose sur trois décisions cohérentes. Chacune transforme les deux autres.</p>
+    <div class="card section">
+      ${[['terrain','Le terrain','Orientation, accès, règles locales'],['budget','Le budget','Enveloppe et arbitrages'],['maison','La maison','Usages, pièces, lumière']].map(([id,t,s])=>
+        `<div class="progress-row"><div class="ring" style="--p:${p[id]}" data-v="${p[id]}%"></div><div><h3>${t}</h3><div class="muted">${s}</div></div><button class="go" data-go="projet" data-sub="${id}">${p[id]?'Reprendre':'Commencer'}</button></div>`).join('')}
+    </div>
+    <div class="section"><div class="eyebrow">Prochaine étape</div>
+      <button class="choice" data-next="${next[0]}" style="background:var(--clay-soft);border-color:transparent"><div><b>${next[1]}</b><span>${next[2]}</span></div><span class="arr">→</span></button>
+    </div>
+    <div class="section card" style="display:flex;gap:14px;align-items:flex-start">
+      <div style="font-size:24px">💡</div>
+      <div><h3>Le saviez-vous ?</h3><p class="muted" style="margin-top:4px">Reprendre ses usages pièce par pièce aide à placer prises et interrupteurs au bon endroit : où allume-t-on en entrant dans la pièce ?</p></div>
+    </div>
+    <div class="section"><button class="btn btn-ghost btn-block" data-restage>Changer ma situation</button></div>
+  </div>`;
+}
+
+function Projet(){
+  if(S.sub==='terrain') return Terrain();
+  if(S.sub==='budget') return Budget();
+  if(S.sub==='maison') return Maison();
+  const p=progress();
+  return `<div class="fade"><div class="eyebrow">Mon carnet de projet</div><h1>Terrain, budget, <em>maison.</em></h1>
+  <p class="lead">Étudier les trois ensemble permet d’arbitrer avant de figer les choix.</p>
+  <div class="stack section">
+  ${[['terrain','Le terrain','triptyque-terrain-1600.webp'],['budget','Le budget','triptyque-budget-1600.webp'],['maison','La maison','triptyque-maison-1600.webp']].map(([id,t,f])=>
+    `<button class="card" data-go="projet" data-sub="${id}" style="padding:0;overflow:hidden;width:100%;text-align:left;display:block">
+      <div style="height:120px;background:linear-gradient(135deg,#CFC3AE,#9AA58A)">${img(IMG(f),t)}</div>
+      <div style="padding:14px 16px;display:flex;align-items:center;gap:12px"><div class="ring" style="--p:${p[id]}" data-v="${p[id]}%"></div><h3 style="font-size:17px">${t}</h3><span class="arr" style="margin-left:auto">→</span></div>
+    </button>`).join('')}
+  </div></div>`;
+}
+function backBtn(){ return `<button class="back" data-go="projet">← Mon carnet</button>`; }
+
+function Terrain(){
+  const t=S.terrain;
+  const yn=(key,val)=>`<div class="seg">${['Oui','Non','Je ne sais pas'].map((l,i)=>{const v=[true,false,'?'][i];return `<button class="${val===v?'on':''}" data-t="${key}" data-v="${i}">${l}</button>`}).join('')}</div>`;
+  let checks='';
+  if(t.has!==null){
+    const items=[
+      ['Règles locales (PLU)', t.commune?`À vérifier pour ${t.commune} : implantation, emprise, hauteurs.`:'Indiquez la commune pour cibler les règles applicables.', t.commune?'warn':''],
+      ['Accès & réseaux', t.viab===true?'Terrain viabilisé : raccordements à confirmer.':t.viab===false?'Raccordements à prévoir dans le budget.':'Eau, électricité, assainissement : à vérifier.', t.viab===true?'ok':'warn'],
+      ['Orientation', t.orientation?`Orientation ${t.orientation} : elle guidera l’implantation et les ouvertures.`:'Elle guide l’implantation et la lumière au quotidien.', t.orientation?'ok':''],
+      ['Nature du sol', 'Les études disponibles orientent les fondations. Votre conseiller vous dira lesquelles demander.', 'warn'],
+    ];
+    checks=`<div class="card section"><div class="eyebrow">Points à anticiper</div><ul class="check-list">${items.map(([a,b,c])=>`<li><span class="dot ${c}">${c==='ok'?'✓':c==='warn'?'!':''}</span><div><b>${a}</b><br><span class="muted">${b}</span></div></li>`).join('')}</ul></div>`;
+  }
+  return `<div class="fade">${backBtn()}<div class="eyebrow">01 · Le terrain</div><h1>Lire le lieu <em>avant de dessiner.</em></h1>
+  <div class="stack section">
+    <div class="field"><label>Avez-vous déjà un terrain ?</label><div class="seg">
+      <button class="${t.has===true?'on':''}" data-has="1">Oui</button><button class="${t.has===false?'on':''}" data-has="0">Pas encore</button></div></div>
+    ${t.has===null?'':`
+    <div class="field"><label>${t.has?'Commune du terrain':'Secteur recherché'}</label><input type="text" id="commune" placeholder="Ex. Rouffiac-Tolosan" value="${t.commune}"></div>
+    <div class="field"><label>Surface ${t.has?'du terrain':'souhaitée'} (m²)</label><input type="number" id="surface" placeholder="Ex. 600" value="${t.surface}"></div>
+    ${t.has?`<div class="field"><label>Orientation du jardin</label><div class="chips">${['Sud','Sud-Ouest','Ouest','Est','Nord'].map(o=>`<button class="chip ${t.orientation===o?'on':''}" data-orient="${o}">${o}</button>`).join('')}</div></div>
+    <div class="field"><label>Est-il viabilisé ?</label>${yn('viab',t.viab)}</div>`:`
+    <div class="note">Pas encore de terrain ? CELIA propose des opportunités qui associent un terrain identifié et une première hypothèse de maison.</div>`}`}
+  </div>${checks}
+  ${t.has!==null?`<div class="section"><button class="btn btn-primary btn-block" data-go="projet" data-sub="budget">Continuer vers le budget →</button></div>`:''}
+  </div>`;
+}
+
+function Budget(){
+  const b=S.budget, r=calcBudget(), hasT=S.terrain.has===true;
+  const lo=r.surface*0.92, hi=r.surface*1.06;
+  const parts=[[r.terrain,'#C9A27E','Terrain'],[r.frais,'#E3C7A6','Frais d’acquisition'],[r.annexes,'#9AA58A','Travaux annexes'],[r.maison,'#F5F1E9','Maison']].filter(x=>x[0]>0);
+  const range=(id,label,val,min,max,step,fmt)=>`<div class="field"><div class="range-head"><label>${label}</label><b>${fmt(val)}</b></div><input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}"></div>`;
+  return `<div class="fade">${backBtn()}<div class="eyebrow">02 · Le budget</div><h1>Votre enveloppe, <em>poste par poste.</em></h1>
+  <p class="lead">Plus de surface ou des prestations prioritaires : l’enveloppe aide à arbitrer.</p>
+  <div class="stack section">
+    ${range('r-total','Enveloppe globale',b.total,150000,900000,5000,eur)}
+    ${hasT?'<div class="note">Terrain déjà acquis : il n’entre pas dans l’enveloppe.</div>':range('r-terrain','Prix du terrain',b.terrainPrix,20000,400000,5000,eur)}
+    ${range('r-annexes','Travaux annexes (raccordements, terrassement, clôture)',b.annexes,0,60000,1000,eur)}
+    ${range('r-m2','Hypothèse de prix au m² habitable',b.m2,1500,3200,50,v=>v.toLocaleString('fr-FR')+' €/m²')}
+  </div>
+  <div class="result section" id="result">
+    <div class="eyebrow" style="color:var(--accent-ink);opacity:.75">Ordre de grandeur</div>
+    <div class="big">${r.maison>0?`${Math.round(lo)}–${Math.round(hi)}<small> m²</small>`:'—'}</div>
+    <div style="font-size:14px;opacity:.85;margin-top:6px">${r.maison>0?`habitables pour un budget maison d’environ ${k(r.maison)}`:'Enveloppe insuffisante : ajustez les curseurs'}</div>
+    <div class="bar">${parts.map(([v,c])=>`<i style="width:${v/b.total*100}%;background:${c}"></i>`).join('')}</div>
+    <div class="legend">${parts.map(([v,c,l])=>`<span style="--c:${c}">${l}</span><b>${k(v)}</b>`).join('')}</div>
+  </div>
+  <p class="note section">Simulation indicative, sans valeur de devis. Frais d’acquisition estimés à 8 % du prix du terrain. Votre conseiller affinera chaque poste selon le terrain et les prestations.</p>
+  <div class="section"><button class="btn btn-primary btn-block" data-go="projet" data-sub="maison">Continuer vers la maison →</button></div>
+  </div>`;
+}
+
+function Maison(){
+  const m=S.maison;
+  return `<div class="fade">${backBtn()}<div class="eyebrow">03 · La maison</div><h1>Le plan est un début. <em>Votre quotidien fait la différence.</em></h1>
+  <div class="stack section">
+    <div class="field"><label>Niveaux</label><div class="seg">${['Plain-pied','À étage','À définir'].map(n=>`<button class="${m.niveaux===n?'on':''}" data-niv="${n}">${n}</button>`).join('')}</div></div>
+    <div class="field"><label>Nombre de chambres</label><div class="stepper"><button data-ch="-1" aria-label="Moins">−</button><b>${m.chambres}</b><button data-ch="1" aria-label="Plus">+</button></div></div>
+    <div class="field"><label>Vos 3 priorités <span class="muted" style="font-weight:500">(${m.priorites.length}/3)</span></label>
+      <div class="chips">${PRIORITES.map(p=>`<button class="chip ${m.priorites.includes(p)?'on':''}" data-prio="${p}">${p}</button>`).join('')}</div></div>
+  </div>
+  <div class="card section"><h3>Une question à vous poser</h3><p class="muted" style="margin-top:6px">Où posez-vous vos clés, vos courses, votre manteau en rentrant ? La réponse dessine déjà votre entrée.</p></div>
+  <div class="section"><button class="btn btn-primary btn-block" data-go="inspi">Trouver mes inspirations →</button></div>
+  </div>`;
+}
+
+function Inspi(){
+  const tags=likedTags();
+  return `<div class="fade"><div class="eyebrow">Inspirations</div><h1>S’inspirer <em>sans choisir un modèle.</em></h1>
+  <p class="lead">Une image peut révéler ce que vous aimez : une lumière, un rapport au jardin. Touchez ♡ pour l’ajouter à votre carnet.</p>
+  <button class="atelier-cta section" data-go="inspi" data-sub="atelier"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg></span><div><b>Photographier une pièce</b><span>L’IA propose agencements et idées déco</span></div><span style="margin-left:auto">→</span></button>
+  ${tags.length?`<div class="card section"><div class="eyebrow">Ce qui semble vous plaire</div><div class="chips">${tags.slice(0,5).map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>`:''}
+  <div class="insp-grid section">
+  ${INSPIRATIONS.map(i=>`<div class="insp">${img(i.img,i.c)}<button class="heart ${S.likes.includes(i.id)?'on':''}" data-like="${i.id}" aria-label="Aimer">${S.likes.includes(i.id)?'♥':'♡'}</button><div class="t">${i.t}<i>${i.c}</i></div></div>`).join('')}
+  </div></div>`;
+}
+
+function Atelier(){
+  const A=S.atelier, back=`<button class="back" data-go="inspi">← Idées</button>`;
+  const head=`<span class="ai-badge">✦ Atelier photo · IA</span><h1 style="margin-top:12px">Votre pièce, <em>d’autres possibles.</em></h1>`;
+  if(!PHOTO) return `<div class="fade">${back}${head}
+    <p class="lead">Photographiez une pièce, un terrain ou une maison qui vous plaît : l’IA vous propose des agencements et des idées déco à discuter avec votre conseiller.</p>
+    <div class="photo-drop section"><div class="big-ic"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg></div>
+      <h3>Ajoutez une photo</h3><p class="muted" style="margin:6px 0 18px">Pièce actuelle, maison visitée, page de magazine…</p>
+      <button class="btn btn-primary btn-block" data-cam>Prendre une photo</button>
+      <button class="btn btn-ghost btn-block" style="margin-top:10px" data-gal>Choisir dans ma galerie</button></div>
+    <input type="file" accept="image/*" capture="environment" id="camInput" hidden><input type="file" accept="image/*" id="galInput" hidden>
+    <p class="note section">Vos photos restent sur votre téléphone tant que vous ne les ajoutez pas à votre carnet.</p></div>`;
+  if(ANALYSING) return `<div class="fade">${head}<div class="photo-wrap section"><img src="${PHOTO}" alt="Votre photo"><div class="grid-ov"></div><div class="scan"></div><div class="scan-label" id="scanLabel">Lecture des volumes…</div></div>
+    <p class="muted section" style="text-align:center">Analyse de la lumière, des teintes et de l’espace</p></div>`;
+  if(A.step==='setup') return `<div class="fade">${back}${head}
+    <div class="photo-wrap section"><img src="${PHOTO}" alt="Votre photo"></div>
+    <div class="stack section">
+      <div class="field"><label>De quel espace s’agit-il ?</label><div class="chips">${Object.keys(ROOMS).map(r=>`<button class="chip ${A.room===r?'on':''}" data-room="${r}">${r}</button>`).join('')}</div></div>
+      <div class="field"><label>Quel style vous attire ?</label><div class="chips">${Object.keys(STYLES).map(r=>`<button class="chip ${A.style===r?'on':''}" data-style="${r}">${r}</button>`).join('')}</div></div>
+    </div>
+    <div class="section"><button class="btn btn-primary btn-block" data-analyse>✦ Lancer l’analyse</button>
+    <button class="btn btn-block" style="margin-top:8px;color:var(--ink-2)" data-newphoto>Changer de photo</button></div></div>`;
+  // Résultats
+  const st=STYLES[A.style], info=PHOTO_INFO||{lum:.5,top:[]};
+  const lumTxt = info.lum>.58?'Pièce lumineuse : vous pouvez oser des teintes plus profondes sur un mur.':info.lum>.4?'Lumière moyenne : gardez les grandes surfaces claires et jouez les contrastes sur le mobilier.':'Pièce peu lumineuse : murs clairs, miroir face à la fenêtre et éclairage en plusieurs points.';
+  const roomTxt={'Séjour':'Les ouvertures guident la place du canapé et du coin repas.','Cuisine':'Le passage entre plan de travail et table est le point à soigner.','Chambre':'La position de la fenêtre décide de l’orientation du lit.','Extérieur':'L’orientation du jardin décide où placer l’ombre et la terrasse.'}[A.room];
+  return `<div class="fade">${back}<span class="ai-badge">✦ Propositions</span><h1 style="margin-top:12px">${A.room}, <em>${A.style.toLowerCase()}.</em></h1>
+    <div class="photo-wrap section"><img src="${PHOTO}" alt="Votre photo" style="height:180px"></div>
+    <div class="card section"><div class="eyebrow">Ce que l’IA observe</div><ul class="obs"><li>${lumTxt}</li><li>${roomTxt}</li></ul>
+      ${info.top.length?`<div class="eyebrow" style="margin-top:10px">Teintes actuelles</div><div class="swatches">${info.top.map(c=>`<div class="sw" style="background:${c}"></div>`).join('')}</div>`:''}</div>
+    <div class="section"><h2>3 agencements possibles</h2><div class="stack" style="margin-top:14px">
+      ${ROOMS[A.room].map((a,i)=>{const kept=A.kept.includes(a.t);return `<div class="card">${planSVG(a.plan)}<h3>0${i+1} · ${a.t}</h3><p class="muted" style="margin-top:4px">${a.d}</p><button class="keep ${kept?'on':''}" data-keep="${a.t}">${kept?'✓ Gardé dans mon carnet':'♡ Garder cette idée'}</button></div>`}).join('')}
+    </div></div>
+    <div class="section"><h2>Idées déco</h2>
+      <div class="card" style="margin-top:14px"><div class="eyebrow">Palette proposée</div><div class="swatches">${st.pal.map(([c,n])=>`<div class="sw" style="background:${c};color:${parseInt(c.slice(1,3),16)<120?'#fff':'#22261F'}">${n}</div>`).join('')}</div>
+      <div class="eyebrow" style="margin-top:16px">Matières</div><div class="chips">${st.mat.map(m=>`<span class="chip">${m}</span>`).join('')}</div>
+      <div class="eyebrow" style="margin-top:16px">À essayer</div><ul class="obs">${st.idees.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+    </div>
+    <div class="section"><button class="btn btn-primary btn-block" data-saveidea>Ajouter au carnet de projet</button>
+    <button class="btn btn-ghost btn-block" style="margin-top:10px" data-newphoto>Nouvelle photo</button></div>
+    <p class="note section">Prototype : la lumière et les teintes sont réellement mesurées sur la photo ; les agencements sont des propositions types. En production, une IA de vision analyserait la pièce elle-même.</p></div>`;
+}
+
+function Rdv(){
+  if(S.rdv.done) return `<div class="fade success"><div class="mark">✓</div><h1>C’est noté, <em>à très vite.</em></h1>
+    <p class="lead">${S.rdv.mode} · ${S.rdv.day} à ${S.rdv.slot}<br>Votre carnet de projet a été transmis à votre conseiller : vous partirez de votre contexte, pas d’une page blanche.</p>
+    <div class="section"><button class="btn btn-ghost" data-cancel>Modifier le rendez-vous</button></div>
+    <p class="note section" style="text-align:left">Prototype : aucune réservation réelle n’est effectuée.</p></div>`;
+  const days=[]; const d=new Date(); d.setDate(d.getDate()+1);
+  while(days.length<8){ if(d.getDay()!==0){ days.push(new Date(d)); } d.setDate(d.getDate()+1); }
+  const fmt=x=>x.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+  const slots=['9h00','10h30','14h00','15h30','17h00','18h30'];
+  const r=calcBudget(), t=S.terrain, m=S.maison, tags=likedTags();
+  return `<div class="fade"><div class="eyebrow">Le premier échange</div><h1>Tout commence <em>par votre contexte.</em></h1>
+  <div class="card section carnet"><div style="display:flex;justify-content:space-between;align-items:center"><h3>Votre carnet transmis</h3><span class="tag">Auto</span></div>
+    <dl>
+      <dt>Terrain</dt><dd>${t.has===null?'Non renseigné':t.has?`Oui${t.commune?' · '+t.commune:''}${t.surface?' · '+t.surface+' m²':''}${t.orientation?' · '+t.orientation:''}`:`En recherche${t.commune?' · '+t.commune:''}`}</dd>
+      <dt>Budget</dt><dd>${S.budgetTouched?`${k(S.budget.total)} · ≈ ${Math.round(r.surface)} m² habitables`:'Non renseigné'}</dd>
+      <dt>Maison</dt><dd>${m.niveaux} · ${m.chambres} chambres${m.priorites.length?' · '+m.priorites.join(', '):''}</dd>
+      <dt>Idées photo</dt><dd>${S.ideas.length?S.ideas.map(i=>i.room+', style '+i.style.toLowerCase()+(i.kept.length?' ('+i.kept.join(', ')+')':'')).join(' · '):'Aucune pour l’instant'}</dd>
+      <dt>Inspirations</dt><dd>${tags.length?tags.slice(0,4).join(', '):'Aucune pour l’instant'}</dd>
+    </dl>
+  </div>
+  <div class="stack section">
+    <div class="field"><label>Comment souhaitez-vous échanger ?</label><div class="seg">${['Agence','Visio','Téléphone'].map(x=>`<button class="${S.rdv.mode===x?'on':''}" data-mode="${x}">${x}</button>`).join('')}</div></div>
+    <div class="field"><label>Jour</label><div class="days">${days.map(x=>{const v=fmt(x);return `<button class="day ${S.rdv.day===v?'on':''}" data-day="${v}"><small>${x.toLocaleDateString('fr-FR',{weekday:'short'})}</small><b>${x.getDate()}</b></button>`}).join('')}</div></div>
+    ${S.rdv.day?`<div class="field"><label>Créneau</label><div class="slots">${slots.map(s=>`<button class="chip ${S.rdv.slot===s?'on':''}" data-slot="${s}">${s}</button>`).join('')}</div></div>`:''}
+  </div>
+  <div class="section"><button class="btn btn-primary btn-block" data-confirm ${S.rdv.day&&S.rdv.slot?'':'disabled'}>Confirmer le rendez-vous</button></div>
+  <p class="muted section" style="text-align:center">Vous préférez être rappelé ? <button style="font-weight:700;color:var(--clay);text-decoration:underline" data-callback>Laisser mon numéro</button></p>
+  </div>`;
+}
+
+/* ---------- Rendu ---------- */
+const ICONS={
+  home:'<svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>',
+  projet:'<svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>',
+  inspi:'<svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>',
+  rdv:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>'
+};
+function render(){
+  const v = S.tab==='home'?Home():S.tab==='projet'?Projet():S.tab==='inspi'?(S.sub==='atelier'?Atelier():Inspi()):Rdv();
+  $('#screen').innerHTML=v;
+  const tabs=[['home','Accueil'],['projet','Mon projet'],['inspi','Idées'],['rdv','Rendez-vous']];
+  $('#tabbar').innerHTML = S.stage? tabs.map(([id,l])=> id==='rdv'
+     ? `<button class="tab cta ${S.tab===id?'on':''}" data-go="${id}"><span class="pill">${ICONS[id]}</span>${l}</button>`
+     : `<button class="tab ${S.tab===id?'on':''}" data-go="${id}">${ICONS[id]}${l}</button>`).join('') : '';
+  $('#tabbar').style.display = S.stage?'flex':'none';
+  bindInputs();
+}
+function bindInputs(){
+  ['camInput','galInput'].forEach(id=>{ const el=document.getElementById(id); if(!el) return;
+    el.onchange=e=>{ const f=e.target.files[0]; if(!f) return; resizePhoto(f,url=>{ PHOTO=url; analysePhoto(url,info=>PHOTO_INFO=info); S.atelier.step='setup'; S.atelier.kept=[]; rerenderKeep(); }); }; });
+  const c=$('#commune'); if(c) c.oninput=e=>{S.terrain.commune=e.target.value.trim(); save();};
+  const s=$('#surface'); if(s) s.oninput=e=>{S.terrain.surface=e.target.value; save();};
+  [['r-total','total'],['r-terrain','terrainPrix'],['r-annexes','annexes'],['r-m2','m2']].forEach(([id,key])=>{
+    const el=document.getElementById(id); if(!el) return;
+    el.oninput=e=>{ S.budget[key]=+e.target.value; S.budgetTouched=true; save();
+      const tmp=document.createElement('div'); tmp.innerHTML=Budget();
+      const fresh=tmp.querySelectorAll('.range-head b');
+      document.querySelectorAll('.range-head b').forEach((n,i)=>{ if(fresh[i]) n.textContent=fresh[i].textContent; });
+      $('#result').innerHTML=tmp.querySelector('#result').innerHTML; };
+  });
+}
+function rerenderKeep(){ const y=$('#screen').scrollTop; save(); render(); const f=$('#screen .fade'); if(f) f.classList.remove('fade'); $('#screen').scrollTop=y; }
+
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return; const d=b.dataset;
+  if(d.stage){ S.stage=d.stage; const map={terrain:['projet','terrain'],recherche:['projet','terrain'],idees:['inspi','atelier'],reperes:['home',null]}; if(d.stage==='recherche') S.terrain.has=false; const [t,sub]=map[d.stage]; toast('Votre parcours est prêt'); return go(t,sub); }
+  if('restage' in d){ S.stage=null; return go('home'); }
+  if(d.next){ return d.next==='inspi'?go('inspi'):d.next==='rdv'?go('rdv'):go('projet',d.next); }
+  if(d.go){ return go(d.go, d.sub||null); }
+  if(d.has!==undefined){ S.terrain.has = d.has==='1'; return rerenderKeep(); }
+  if(d.orient){ S.terrain.orientation=d.orient; return rerenderKeep(); }
+  if(d.t){ S.terrain[d.t]=[true,false,'?'][+d.v]; return rerenderKeep(); }
+  if(d.niv){ S.maison.niveaux=d.niv; return rerenderKeep(); }
+  if(d.ch){ S.maison.chambres=Math.max(1,Math.min(7,S.maison.chambres+ +d.ch)); return rerenderKeep(); }
+  if(d.prio){ const p=S.maison.priorites, i=p.indexOf(d.prio); if(i>-1) p.splice(i,1); else if(p.length<3) p.push(d.prio); else toast('3 priorités maximum'); return rerenderKeep(); }
+  if(d.like){ const i=S.likes.indexOf(d.like); if(i>-1) S.likes.splice(i,1); else { S.likes.push(d.like); toast('Ajouté à votre carnet'); } return rerenderKeep(); }
+  if(d.mode){ S.rdv.mode=d.mode; return rerenderKeep(); }
+  if(d.day){ S.rdv.day=d.day; S.rdv.slot=null; return rerenderKeep(); }
+  if(d.slot){ S.rdv.slot=d.slot; return rerenderKeep(); }
+  if('confirm' in d){ S.rdv.done=true; return go('rdv'); }
+  if('cancel' in d){ S.rdv.done=false; return go('rdv'); }
+  if('cam' in d){ document.getElementById('camInput').click(); return; }
+  if('gal' in d){ document.getElementById('galInput').click(); return; }
+  if(d.room){ S.atelier.room=d.room; return rerenderKeep(); }
+  if(d.style){ S.atelier.style=d.style; return rerenderKeep(); }
+  if('newphoto' in d){ PHOTO=null; PHOTO_INFO=null; S.atelier.step='start'; return rerenderKeep(); }
+  if('analyse' in d){ ANALYSING=true; go('inspi','atelier'); const msgs=['Lecture des volumes…','Mesure de la lumière…','Repérage des teintes…','Composition des propositions…']; let i=0;
+    const iv=setInterval(()=>{ i++; const l=document.getElementById('scanLabel'); if(l&&msgs[i]) l.textContent=msgs[i]; },650);
+    setTimeout(()=>{ clearInterval(iv); ANALYSING=false; S.atelier.step='result'; go('inspi','atelier'); },2700); return; }
+  if(d.keep){ const k=S.atelier.kept, i=k.indexOf(d.keep); if(i>-1) k.splice(i,1); else k.push(d.keep); return rerenderKeep(); }
+  if('saveidea' in d){ const A=S.atelier; S.ideas=S.ideas.filter(x=>!(x.room===A.room&&x.style===A.style)); S.ideas.push({room:A.room,style:A.style,kept:[...A.kept]}); toast('Ajouté à votre carnet'); return rerenderKeep(); }
+  if('callback' in d){ toast('Prototype : rappel simulé'); return; }
+});
+$('#resetBtn').onclick=()=>{ S=structuredClone(DEFAULT); try{localStorage.removeItem('celia-proto')}catch(e){} render(); toast('Démo réinitialisée'); };
+render();
+</script>
+</body>
+</html>
